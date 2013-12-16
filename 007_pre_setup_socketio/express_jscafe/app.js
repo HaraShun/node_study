@@ -39,7 +39,8 @@ server.listen(app.get('port'), function(){
 });
 
 var io = require('socket.io');
-var io = io.listen(server);
-io.sockets.on('connection', function(socket) {
+var ios = io.listen(server);
+
+ios.sockets.on('connection', function(socket){
   bbs.message(socket);
 });

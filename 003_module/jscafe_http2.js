@@ -1,31 +1,44 @@
 var http = require('http');
 var emitter = require('events').EventEmitter;
-var util = require("util");
+var util = require('util');
 
-function JSCafe() {
+//コンストラクタ
+function Module_http() {
   emitter.call(this);
 }
-// event emitterを継承
-util.inherits(JSCafe, emitter);
 
-JSCafe.prototype.request = function(url) {
+//module_httpがEventEmitterを継承する
+util.inherits(Module_http, emitter);
+
+Module_http.prototype.request = function(url) {
+
   var self = this;
-  http.get(url, function(res){
+
+  http.get(url, function(res) {
+
     res.setEncoding('utf-8');
+
     var buffer = '';
-    res.on('readable', function(){
+
+    res.on('readable', function() {
       buffer += res.read();
     });
+
+    //レスポンスがすべて帰ったらコールバックを呼ぶ
     res.on('end', function() {
-      // 読み込みが終わったこととデータを通知
+      //callback(null, buffer);
       self.emit('end', buffer);
     });
+
+    //エラーが起こったとき
     res.on('error', function(e) {
-      // エラーが発生したらその事を通知
+      console.log('Got error:' + e);
+      // callback(e, buffer);
       self.emit('error', e);
     });
+
   });
   return self;
 };
 
-module.exports = JSCafe;
+module.exports = Module_http;

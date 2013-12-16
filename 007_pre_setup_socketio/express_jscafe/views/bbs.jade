@@ -1,10 +1,11 @@
 extends layout
 
 block content
-  form
-    textarea(id='message', name='message')
-    input(id='submit', type='button', value='submit')
-  ul(id='list')
-    each val in messages
-      if val
-        li= val
+ form(action='./bbs', method='post')
+  textarea(id='message', name='message')
+  input(id='submit', type='submit', value='submit')
+
+ ul(id='list')
+  each val in messages
+   if val
+    li= val

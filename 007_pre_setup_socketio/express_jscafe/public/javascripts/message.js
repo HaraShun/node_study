@@ -1,22 +1,39 @@
-$(function(){
+(function(){
+
   var socket = io.connect();
-  socket.on('connect', function() {
-    socket.on('message', function (message) {
+  var list = document.getElementById('list');
+  var submit = document.getElementById('submit');
+  var textarea = document.getElementById('message');
+
+  socket.on('connect', function(){
+
+    //messageイベントを受けたらlistに追加する
+    socket.on('message', function(message){
       appendMessage(message);
     });
-    $('#submit').click(function() {
-      var message = $('#message').val();
-      $('#message').val('');
-      if (message && socket) {
-        // 自分のメッセージをページに追加してからemitする。
-        appendMessage(message);
-        socket.emit('message', message);
-      }
-    });
-    function appendMessage(message) {
-      var li = $('<li></li>').text(message);
-      var list = $('#list');
-      list.append(li);
+
+    //メッセージをリストに追加する関数
+    function appendMessage(message){
+      var li = document.createElement('li');
+      var text = document.createTextNode(message);
+
+      li.appendChild(text);
+      list.appendChild(li);
     }
+
+    //submitした時の処理
+    submit.addEventListener('click', function(e){
+      e.preventDefault();
+
+      var message = textarea.value;
+      if(message && socket){
+        //自分の所に追加してからwebsocketで通知する
+        appendMessage(message);
+        socket.emit('message', message);  
+      }
+
+    });
+
   });
-});
+
+})();
