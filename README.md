@@ -2,7 +2,7 @@ Node Studyについて
 =================
 
 この資料はNode.jsを勉強するための資料です。
-JSCafeと呼ばれる勉強会で発表するために作ったものですが、それ以外にも使えるようにするために、資料として残しておきます。
+元々[yosuke_furukawa](https://twitter.com/yosuke_furukawa)氏がJSCafeと呼ばれる勉強会で発表するために作ったものですが、社内でハンズオンするために[mitsuruog](https://twitter.com/mitsuruog)がForkして改変してます。（本人には了承いただいてます＾＾）
 
 ゴール
 -----------------
@@ -13,7 +13,7 @@ Node.jsでゼロから、とは言わないまでも基礎を把握し、色ん�
 -----------------
 
 - Node.jsの実行環境であるマシンは必要です、自分の環境がMacなので、可能であればMacの方が良いですが、WindowsやLinuxの場合でも問題はありません。
-- Node.js本体。brew install node.js でインストールするか、nave、nvm、nodebrew等を使ってインストールしてください、インストール出来れば何でもいいのですが、バージョンは揃えましょう。現在最新の安定版を使ってください。2013年7月20日ではv0.10が最新の安定版です。
+- Node.js本体。brew install node.js でインストールするか、nave、nvm、nodebrew等を使ってインストールしてください、インストール出来れば何でもいいのですが、バージョンは揃えましょう。現在最新の安定版を使ってください。2013年12月16日ではv0.10.23が最新の安定版です。
 - gitが入っている事を推奨します。
 
 目次
@@ -37,5 +37,7 @@ Node.jsでゼロから、とは言わないまでも基礎を把握し、色ん�
 作者
 -----------------
 [yosuke_furukawa](https://twitter.com/yosuke_furukawa)
+
+Updated by [mitsuruog](https://twitter.com/mitsuruog)
 
 
