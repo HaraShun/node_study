@@ -105,12 +105,12 @@ server.listen(app.get('port'), function(){
 
 // socket.ioのモジュールを読み込み、bbsのモジュールにsocketを渡しておく。
 var io = require('socket.io');
-var io = io.listen(server);
+var ios = io.listen(server);
 
-// io.socketsは接続された全てのsocketを指します。
+// ios.socketsは接続された全てのsocketを指します。
 // on('connection')で接続した時のアクションを登録します。
 // ここでは、接続したsocketを受け取り、bbs.message関数に渡します。
-io.sockets.on('connection', function(socket) {
+ios.sockets.on('connection', function(socket) {
   bbs.message(socket);
 });
 
@@ -148,11 +148,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='http://code.jquery.com/jquery-2.0.3.js')
     script(src='/socket.io/socket.io.js')
-    script(src='/javascripts/message.js')
   body
     block content
+    script(src='/javascripts/message.js')
 ```
 
 jqueryとsocket.io.js、message.jsを読み込むように変更します。
@@ -165,7 +164,7 @@ extends layout
 block content
   form
     textarea(id='message', name='message')
-    input(id='submit', type='button', value='submit')
+    input(id='submit', type='submit', value='submit')
   ul(id='list')
     each val in messages
       if val
@@ -175,31 +174,40 @@ block content
 ### public/javascript/message.jsを追加する。
 
 ```js
-$(function(){
+(function(){
+
   var socket = io.connect();
-  socket.on('connect', function() {
-    //message イベントを受けたらメッセージをlistに追加する
-    socket.on('message', function (message) {
+  var list = document.getElementById('list');
+  var submit = document.getElementById('submit');
+  var textarea = document.getElementById('message');
+
+  socket.on('connect', function(){
+
+    //messageイベントを受けたらlistに追加する
+    socket.on('message', function(message){
       appendMessage(message);
     });
 
-    //submitボタンを押したらmessageを送る。
-    $('#submit').click(function() {
-      var message = $('#message').val();
-      $('#message').val('');
-      if (message && socket) {
-        // 自分のメッセージをページに追加してからemitする。
+    //メッセージをリストに追加する関数
+    function appendMessage(message){
+      var li = document.createElement('li');
+      var text = document.createTextNode(message);
+      li.appendChild(text);
+      list.appendChild(li);
+    }
+
+    //submitした時の処理
+    submit.addEventListener('click', function(e){
+      e.preventDefault();
+      var message = textarea.value;
+      if(message && socket){
+        //自分の所に追加してからwebsocketで通知する
         appendMessage(message);
-        socket.emit('message', message);
+        socket.emit('message', message);  
       }
     });
-    function appendMessage(message) {
-      var li = $('<li></li>').text(message);
-      var list = $('#list');
-      list.append(li);
-    }
   });
-});
+})();
 ```
 
 まとめ
